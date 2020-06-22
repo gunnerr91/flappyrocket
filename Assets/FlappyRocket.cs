@@ -5,31 +5,57 @@ using UnityEngine;
 public class FlappyRocket : MonoBehaviour
 {
     Rigidbody rigidBody;
+    AudioSource audioSource;
+
+    [SerializeField]
+    float boosterThrust = 100f;
+    
+    [SerializeField]
+    float mainThrust = 100f;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        ProcessInput();
+        Thrust();
+        Rotate();
     }
 
-    private void ProcessInput()
+    private void Thrust()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            rigidBody.AddRelativeForce(0, 4, 0);
-            print("flap away!!");
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
         }
-        else if (Input.GetKey(KeyCode.A))
+        else
         {
-            transform.Rotate(Vector3.forward);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            transform.Rotate(-Vector3.forward);
+            audioSource.Stop();
         }
     }
+
+    private void Rotate()
+    {
+        rigidBody.freezeRotation = true;
+        var rotationThisFrame = boosterThrust * Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Rotate(Vector3.forward * rotationThisFrame);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Rotate(-Vector3.forward * rotationThisFrame);
+        }
+
+        rigidBody.freezeRotation = false;
+    }
+
 }

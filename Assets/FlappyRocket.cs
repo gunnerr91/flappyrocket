@@ -8,10 +8,10 @@ public class FlappyRocket : MonoBehaviour
     AudioSource audioSource;
 
     [SerializeField]
-    float boosterThrust = 100f;
+    float boosterThrust = 1f;
     
     [SerializeField]
-    float mainThrust = 100f;
+    float mainThrust = 1f;
 
     void Start()
     {
@@ -23,6 +23,22 @@ public class FlappyRocket : MonoBehaviour
     {
         Thrust();
         Rotate();
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Friendly":
+                print("its friendly");
+                break;
+            case "Fuel":
+                print("refueled");
+                break;
+            default:
+                print("game over");
+                break;
+        }
     }
 
     private void Thrust()

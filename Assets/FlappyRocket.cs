@@ -35,6 +35,9 @@ public class FlappyRocket : MonoBehaviour
             case "Fuel":
                 print("refueled");
                 break;
+            case "Respawn":
+                print("game over");
+                break;
             default:
                 print("game over");
                 break;

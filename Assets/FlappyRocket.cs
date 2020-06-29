@@ -8,10 +8,10 @@ public class FlappyRocket : MonoBehaviour
     AudioSource audioSource;
 
     [SerializeField]
-    float boosterThrust = 1f;
+    float boosterThrust = 65f;
 
     [SerializeField]
-    float mainThrust = 1f;
+    float mainThrust = 3f;
 
     enum State { Alive, Trancending, Dead }
 
@@ -88,7 +88,7 @@ public class FlappyRocket : MonoBehaviour
 
     private void Thrust()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.R))
         {
             if (!audioSource.isPlaying)
             {

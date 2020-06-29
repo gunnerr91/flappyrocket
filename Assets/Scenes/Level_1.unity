@@ -980,36 +980,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6295807289448619773, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d3b68b323b9a8444fab078bf24372449, type: 2}
-    - target: {fileID: 6295807290304109934, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d3b68b323b9a8444fab078bf24372449, type: 2}
-    - target: {fileID: 6295807290305500816, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 584ff030ef12b8644842a66a9d95ae09, type: 2}
-    - target: {fileID: 6295807290316261962, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d3b68b323b9a8444fab078bf24372449, type: 2}
-    - target: {fileID: 6295807291231720123, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: mainThrust
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6295807291231720123, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: boosterThrust
-      value: 65
-      objectReference: {fileID: 0}
     - target: {fileID: 6295807291231720124, guid: e410430d93990264dba5e95e2299ef7b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1064,11 +1034,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 1.044
-      objectReference: {fileID: 0}
-    - target: {fileID: 6295807291231720125, guid: e410430d93990264dba5e95e2299ef7b,
-        type: 3}
-      propertyPath: m_Drag
-      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6295807291231720126, guid: e410430d93990264dba5e95e2299ef7b,
         type: 3}

@@ -7,11 +7,16 @@ public class FlappyRocket : MonoBehaviour
     Rigidbody rigidBody;
     AudioSource audioSource;
 
-    [SerializeField]
-    float boosterThrust = 65f;
+    [SerializeField] float boosterThrust = 65f;
+    [SerializeField] float mainThrust = 3f;
 
-    [SerializeField]
-    float mainThrust = 3f;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip death;
+    [SerializeField] AudioClip success;
+
+    [SerializeField] ParticleSystem mainEngineParticle;
+    [SerializeField] ParticleSystem deathParticle;
+    [SerializeField] ParticleSystem successParticle;
 
     enum State { Alive, Trancending, Dead }
 
@@ -26,83 +31,82 @@ public class FlappyRocket : MonoBehaviour
 
     void Update()
     {
-        if (state.Equals(State.Dead))
+        if (state == State.Alive)
         {
-            audioSource.Stop();
-            return;
-        }
-        else
-        {
-            Thrust();
-            Rotate();
+            ResponseToThrustInput();
+            ResponseToRotateInput();
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        if (state != State.Alive) { return; } // ignore collisions when dead
+
         switch (collision.gameObject.tag)
         {
             case "Friendly":
                 break;
             case "Finish":
-                state = State.Trancending;
-                Invoke("LoadNextScene", 2f);
-                break;
-            case "Respawn":
-                state = State.Dead;
-                if (SceneManager.GetActiveScene().buildIndex == 1)
-                {
-                    Invoke("LoadCurrentScene", 1f);
-                }
-                else
-                {
-                    Invoke("LoadCurrentScene", 1f);
-                }
-                print("game over");
+                StartSuccessSequence();
                 break;
             default:
-                if (SceneManager.GetActiveScene().buildIndex == 1)
-                {
-                    SceneManager.LoadScene(1);
-                }
-                else
-                {
-                    SceneManager.LoadScene(0);
-                }
-                print("game over");
+                StartDeathSequence();
                 break;
         }
     }
 
-    private void LoadCurrentScene()
+    private void StartDeathSequence()
     {
-        state = State.Alive;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        state = State.Dead;
+        audioSource.Stop();
+        audioSource.PlayOneShot(death);
+        deathParticle.Play();
+        Invoke("LoadFirstLevel", 1f);
     }
 
-    private void LoadNextScene()
+    private void StartSuccessSequence()
     {
-        state = State.Alive;
+        state = State.Trancending;
+        audioSource.Stop();
+        audioSource.PlayOneShot(success);
+        successParticle.Play();
+        Invoke("LoadNextLevel", 1f);
+    }
+
+    private void LoadNextLevel()
+    {
         SceneManager.LoadScene(1);
     }
 
-    private void Thrust()
+    private void LoadFirstLevel()
     {
-        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.R))
+        SceneManager.LoadScene(0);
+    }
+
+    private void ResponseToThrustInput()
+    {
+        if (Input.GetKey(KeyCode.Space))
         {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
-            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+            ApplyThrust();
         }
         else
         {
             audioSource.Stop();
+            //mainEngineParticle.Stop();
         }
     }
 
-    private void Rotate()
+    private void ApplyThrust()
+    {
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+        mainEngineParticle.Play();
+    }
+
+    private void ResponseToRotateInput()
     {
         rigidBody.freezeRotation = true;
         var rotationThisFrame = boosterThrust * Time.deltaTime;

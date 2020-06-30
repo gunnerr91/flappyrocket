@@ -9,6 +9,7 @@ public class FlappyRocket : MonoBehaviour
 
     [SerializeField] float boosterThrust = 65f;
     [SerializeField] float mainThrust = 3f;
+    [SerializeField] float levelLoadDelay = 2f;
 
     [SerializeField] AudioClip mainEngine;
     [SerializeField] AudioClip death;
@@ -61,7 +62,7 @@ public class FlappyRocket : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(death);
         deathParticle.Play();
-        Invoke("LoadFirstLevel", 1f);
+        Invoke("LoadFirstLevel", levelLoadDelay);
     }
 
     private void StartSuccessSequence()
@@ -70,7 +71,7 @@ public class FlappyRocket : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(success);
         successParticle.Play();
-        Invoke("LoadNextLevel", 1f);
+        Invoke("LoadNextLevel", levelLoadDelay);
     }
 
     private void LoadNextLevel()
@@ -98,7 +99,7 @@ public class FlappyRocket : MonoBehaviour
 
     private void ApplyThrust()
     {
-        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(mainEngine);

@@ -19,6 +19,8 @@ public class FlappyRocket : MonoBehaviour
     [SerializeField] ParticleSystem deathParticle;
     [SerializeField] ParticleSystem successParticle;
 
+    bool isCollisionDetectionOn = true;
+
     enum State { Alive, Trancending, Dead }
 
     [SerializeField]
@@ -37,22 +39,47 @@ public class FlappyRocket : MonoBehaviour
             ResponseToThrustInput();
             ResponseToRotateInput();
         }
+
+        if (Debug.isDebugBuild)
+        {
+            ResponseToDebug();
+        }
+    }
+
+    void ResponseToDebug()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+        else if (Input.GetKeyDown(KeyCode.K))
+        {
+            LoadFirstLevel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            isCollisionDetectionOn = !isCollisionDetectionOn;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (state != State.Alive) { return; } // ignore collisions when dead
 
-        switch (collision.gameObject.tag)
+        if (isCollisionDetectionOn)
         {
-            case "Friendly":
-                break;
-            case "Finish":
-                StartSuccessSequence();
-                break;
-            default:
-                StartDeathSequence();
-                break;
+            switch (collision.gameObject.tag)
+            {
+                case "Friendly":
+                    break;
+                case "Finish":
+                    StartSuccessSequence();
+                    break;
+                default:
+                    StartDeathSequence();
+                    break;
+            }
         }
     }
 
@@ -109,7 +136,8 @@ public class FlappyRocket : MonoBehaviour
 
     private void ResponseToRotateInput()
     {
-        rigidBody.freezeRotation = true;
+        rigidBody.angularVelocity = Vector3.zero;
+        //rigidBody.freezeRotation = true;
         var rotationThisFrame = boosterThrust * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -121,7 +149,7 @@ public class FlappyRocket : MonoBehaviour
             transform.Rotate(-Vector3.forward * rotationThisFrame);
         }
 
-        rigidBody.freezeRotation = false;
+        //rigidBody.freezeRotation = false;
     }
 
 }
